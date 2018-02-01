@@ -2,33 +2,33 @@ module bug1
 
   implicit none
 
-  type foo_t
+  type s_t
     class(*), allocatable :: value
-  end type foo_t
+  end type s_t
 
-  type vec_t
+  type v_t
     class(*), allocatable :: value(:)
-  end type vec_t
+  end type v_t
 
-  type mat_t
+  type m_t
     class(*), allocatable :: value(:,:)
-  end type mat_t
+  end type m_t
 
 contains
-  type(foo_t) function foo(value)
+  type(s_t) function scalar(value)
     class(*), intent(in) :: value
-    allocate(foo%value, source=value)
-  end function foo
+    allocate(scalar%value, source=value)
+  end function scalar
 
-  type(vec_t) function vec(value)
+  type(v_t) function vector(value)
     class(*), intent(in) :: value(:)
-    allocate(vec%value, source=value)
-  end function vec
+    allocate(vector%value, source=value)
+  end function vector
 
-  type(mat_t) function mat(value)
+  type(m_t) function matrix(value)
     class(*), intent(in) :: value(:,:)
-    allocate(mat%value, source=value)
-  end function mat
+    allocate(matrix%value, source=value)
+  end function matrix
 
 end module bug1
 
@@ -36,17 +36,17 @@ program test_bug1
   use bug1
   implicit none
 
-  type(foo_t) :: f
-  type(vec_t) :: v
-  type(mat_t) :: m
+  type(s_t) :: f
+  type(v_t) :: v
+  type(m_t) :: m
 
-  v = vec([1,2,3,4])
-  m = mat(reshape([1,2,3,4],[2,2]))
+  v = vector([1,2,3,4])
+  m = matrix(reshape([1,2,3,4],[2,2]))
 
-  f = foo(v) !< when the class is a vector, no error
-  f = foo(m) !< when the class is a matrix, an error occurred
+  f = scalar(v) !< when the class is a vectortor, no error
+  f = scalar(m) !< when the class is a matrixrix, an error occurred
   !< Fortran runtime error:
-  !< Array bound mismatch for dimension 1 of array '<<unknown>>' (4/2)
+  !< Array bound mismatrixch for dimension 1 of array '<<unknown>>' (4/2)
 
   !< Gfortran compile parameters contains: "-fcheck=all", remove it get no error.
 
