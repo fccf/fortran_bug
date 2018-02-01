@@ -43,10 +43,10 @@ program test_bug1
   v = vector([1,2,3,4])
   m = matrix(reshape([1,2,3,4],[2,2]))
 
-  f = scalar(v) !< when the class is a vectortor, no error
-  f = scalar(m) !< when the class is a matrixrix, an error occurred
+  f = scalar(v) !< when the class is a vector, no error
+  f = scalar(m) !< when the class is a matrix, an error occurred
   !< Fortran runtime error:
-  !< Array bound mismatrixch for dimension 1 of array '<<unknown>>' (4/2)
+  !< Fortran runtime error: Array bound mismatch for dimension 1 of array '<<unknown>>' (4/2)
 
   !< Gfortran compile parameters contains: "-fcheck=all", remove it get no error.
 
